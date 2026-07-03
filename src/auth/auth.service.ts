@@ -12,7 +12,7 @@ export class AuthService {
     async login(loginDto:loginDto) {
         const {email, senha} = loginDto;
         const resultado = await this.databaseService.query(
-            `SELECT id, nome, email, senha, FROM usuario WHERE email = ?`, [email]);
+            `SELECT id, nome, email, senha FROM usuario WHERE email = ?`, [email]);
 
             const usuarios = resultado as Usuario[];
             const usuario = usuarios[0]; //essa posição sera usada se encontrar o email
@@ -38,11 +38,33 @@ export class AuthService {
                 usuario: {
                     id: usuario.id,
                     nome: usuario.nome,
-                    email: usuario.email
-                }
+                    email: usuario.email,
+                },
             };
+        }
 
+        async loginComSession(loginDto:loginDto){
+            const {email, senha} = loginDto;
+            const resultado = await this.databaseService.query(
+                `
+                SELECT id, nome, email, senha
+                FROM usuario
+                WHERE email = ?
+                `,
+                [email]
+            );
 
-        
+            const usuarios = resultado as Usuario[];
+            const usuario = usuarios[0];
+
+            if(!usuario) {
+                throw new UnauthorizedException('Email ou senha inválidos!')
+            }
+
+            return {
+                id: usuario.id,
+                nome: usuario.nome,
+                email: usuario.email
+            };
         }
 }
