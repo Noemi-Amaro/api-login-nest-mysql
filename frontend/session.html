@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Login com Session</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body id="paginaSession">
+ 
+  <div class="container">
+    <div class="card">
+      <h1>Login com Session</h1>
+ 
+      <p>
+        Nesta tela, o login não retorna JWT.
+        O servidor cria uma sessão e o navegador guarda um cookie automaticamente.
+      </p>
+ 
+      <form id="formSessionLogin">
+        <input
+          type="email"
+          id="emailSession"
+          placeholder="E-mail"
+          required
+        >
+ 
+        <input
+          type="password"
+          id="senhaSession"
+          placeholder="Senha"
+          required
+        >
+ 
+        <button type="submit">Entrar com Session</button>
+      </form>
+ 
+      <p id="mensagemSession" class="mensagem"></p>
+ 
+      <div id="dadosSession" class="perfil-info" style="display: none;">
+        <h2>Usuário autenticado por session</h2>
+ 
+        <p><strong>ID:</strong> <span id="idSession"></span></p>
+        <p><strong>Nome:</strong> <span id="nomeSession"></span></p>
+        <p><strong>E-mail:</strong> <span id="emailSessionUsuario"></span></p>
+      </div>
+ 
+      <button id="botaoVerificarSession" type="button">
+        Verificar Área Protegida
+      </button>
+ 
+      <button id="botaoLogoutSession" type="button">
+        Sair da Session
+      </button>
+ 
+      <a href="login.html">Voltar para login com JWT</a>
+    </div>
+  </div>
+ 
+  <script src="app.js"></script>
+</body>
+</html>

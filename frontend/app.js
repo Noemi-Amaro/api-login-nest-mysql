@@ -1,4 +1,4 @@
-const API_URL = 'http://localhost:3000';
+const API_URL = 'http://127.0.0.1:3000';
  
 const formCadastro = document.getElementById('formCadastro');
  
@@ -101,4 +101,74 @@ const paginaPerfil = document.getElementById('paginaPerfil');
         }
         
       });
+  }
+
+  const paginaSession = document.getElementById('paginaSession');
+
+  if(paginaSession){
+    const formSessionLogin = document.getElementById('formSessionLogin');
+    const mensagemSession = document.getElementById('mensagemSession');
+    const dadosSession = document.getElementById('dadosSession');
+
+    formSessionLogin.addEventListener('submit', async function (event) {
+      event.preventDefault();
+
+      const email = document.getElementById('emailSession').value;
+      const senha = document.getElementById('senhaSession').value;
+
+      const resposta = await fetch(`${API_URL}/auth/session-login`, {
+        method: 'POST',
+        credentials: 'include',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({email, senha})
+      });
+      const dados = await resposta.json();
+
+      if(resposta.ok) {
+        mensagemSession.textContent = dados.usuario.mensagem;
+        document.getElementById('idSession').textContent = dados.usuario.id;
+        document.getElementById('nomeSession').textContent = dados.usuario.nome;
+        document.getElementById('emailSessionUsuario').textContent = dados.usuario.email;
+
+        dadosSession.style.display = 'block';
+      } else {
+        mensagemSession.textContent = dados.message || 'Erro ao realizar login com session';
+        dadosSession.style.display = 'none';
+      }
+      formSessionLogin.reset();
+    });
+
+    document.getElementById('botaoVerificarSession').addEventListener('click', async function () {
+      const resposta = await fetch(`${API_URL}/auth/session-area`, {
+        method: 'GET',
+        credentials: 'include'
+      });
+    const dados = await resposta.json();
+
+    if (resposta.ok) {
+      mensagemSession.textContent = dados.mensagem;
+      document.getElementById('idSession').textContent = dados.usuario.id;
+      document.getElementById('nomeSession').textContent = dados.usuario.nome;
+      document.getElementById('emailSessionUsuario').textContent = dados.usuario.email;
+
+      dadosSession.style.display = 'block';
+    } else {
+      mensagemSession.textContent = dados.message || 'Sessão não encontrada';
+      dadosSession.style.display = 'none'; 
+    }
+    });
+
+    document.getElementById('botaoLogoutSession').addEventListener('click', async function() {
+      const resposta = await fetch(`${API_URL}/auth/session-logout`, {
+        method: 'POST',
+        credentials: 'include'
+      });
+      const dados = await resposta.json()
+
+      mensagemSession.textContent = dados.mensagem;
+      dadosSession.style.display = 'none';
+    });
+    
   }
